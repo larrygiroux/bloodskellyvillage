@@ -1,0 +1,22 @@
+# Gradle build artifacts
+.gradle/
+build/
+
+# NeoForge/MCreator generated run files
+run/
+
+# Build artifacts and generated jars
+build/moddev/
+
+# IDE/project metadata
+.vscode/
+.eclipse/
+
+# Temporary files and logs
+*.log
+*.tmp
+*.cache
+
+# System files
+.DS_Store
+Thumbs.db
