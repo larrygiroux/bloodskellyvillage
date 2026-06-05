@@ -5,7 +5,8 @@ from pathlib import Path
 
 # Directories
 BLOCKBENCH_DIR = Path("blockbench/blockbench_projects")
-OUTPUT_BASE = Path("src/main/resources/assets/bloodskellyvillage/entity")
+OUTPUT_BASE_MOD = Path("src/main/resources/assets/bloodskellyvillage/textures/entity")
+OUTPUT_BASE_MINECRAFT = Path("src/main/resources/assets/minecraft/textures/entity")
 
 
 def extract_textures_from_bbmodel(entity_dir: Path) -> int:
@@ -63,17 +64,20 @@ def copy_textures():
             continue
 
         entity_name = entity_dir.name
-        out_dir = OUTPUT_BASE / entity_name
-        out_dir.mkdir(parents=True, exist_ok=True)
+        mod_out_dir = OUTPUT_BASE_MOD / entity_name
+        vanilla_out_dir = OUTPUT_BASE_MINECRAFT / entity_name
+        mod_out_dir.mkdir(parents=True, exist_ok=True)
+        vanilla_out_dir.mkdir(parents=True, exist_ok=True)
 
         extracted = extract_textures_from_bbmodel(entity_dir)
         total_extracted += extracted
 
         for tex in entity_dir.rglob("*.png"):
-            dest = out_dir / tex.name
-            shutil.copy2(tex, dest)
-            print(f"Copied {tex} -> {dest}")
-            total_copied += 1
+            for out_dir in (mod_out_dir, vanilla_out_dir):
+                dest = out_dir / tex.name
+                shutil.copy2(tex, dest)
+                print(f"Copied {tex} -> {dest}")
+                total_copied += 1
 
     print(f"\nTotal embedded textures extracted: {total_extracted}")
     print(f"Total textures copied: {total_copied}")
